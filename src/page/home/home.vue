@@ -1,8 +1,6 @@
 <template>
-  <div class="city_container">
-    <head-top :head-title="cityname">
-      <router-link to="/city" slot="changecity" class="change_city">切换城市</router-link>
-    </head-top>
+  <div>
+    <head-top :head-title="cityname"></head-top>
     <yd-cell-group>
       <yd-cell-item>
         <span slot="left">yueB：</span>
@@ -48,7 +46,7 @@
         <span slot="left">手机号码：</span>
         <yd-input slot="right" required v-model="input1" min="5" max="5" placeholder="请输入手机号码"></yd-input>
       </yd-cell-item>
-      <yd-flexbox>
+      <yd-flexbox v-bind:style="{'margin-left': '5%'}">
         <yd-flexbox-item>
           <yd-checkbox v-model="checkbox1" size="30">啦啦啦啦</yd-checkbox>
         </yd-flexbox-item>
@@ -72,14 +70,6 @@
       <yd-button v-if="!nextStep" size="large" @click.native="clickHander">立即查价</yd-button>
       <yd-button v-else size="large" @click.native="clickHander">下一步</yd-button>
     </yd-button-group>
-    <header v-if="historytitle" class="pois_search_history">搜索历史</header>
-    <ul class="getpois_ul">
-      <li v-for="(item, index) in placelist" @click='nextpage(index, item.geohash)' :key="index">
-        <h4 class="pois_name ellipsis">{{item.name}}</h4>
-        <p class="pois_address ellipsis">{{item.address}}</p>
-      </li>
-    </ul>
-    <div class="search_none_place" v-if="placeNone">很抱歉！无搜索结果</div>
     <foot-guide></foot-guide>
   </div>
 </template>
@@ -186,78 +176,3 @@
   }
 
 </script>
-
-<style lang="scss" scoped>
-  @import 'src/style/mixin';
-  .city_container{
-    padding-top: 2.35rem;
-  }
-  .change_city{
-    right: 0.4rem;
-    @include sc(0.6rem, #fff);
-    @include ct;
-  }
-  .city_form{
-    background-color: #fff;
-    border-top: 1px solid $bc;
-    border-bottom: 1px solid $bc;
-    padding-top: 0.4rem;
-    div{
-      width: 90%;
-      margin: 0 auto;
-      text-align: center;
-      .input_style{
-        border-radius: 0.1rem;
-        margin-bottom: 0.4rem;
-        @include wh(100%, 1.4rem);
-      }
-      .city_input{
-        border: 1px solid $bc;
-        padding: 0 0.3rem;
-        @include sc(0.65rem, #333);
-        width:80%;
-        float: left;
-      }
-      .city_submit{
-        background-color: $blue;
-        @include sc(0.65rem, #fff);
-      }
-      label{
-        width:20%;
-        float: left;
-      }
-    }
-  }
-  .pois_search_history{
-    border-top: 1px solid $bc;
-    border-bottom: 1px solid $bc;
-    padding-left: 0.5rem;
-    @include font(0.475rem, 0.8rem);
-  }
-  .getpois_ul{
-    background-color: #fff;
-    border-top: 1px solid $bc;
-    li{
-      margin: 0 auto;
-      padding-top: 0.65rem;
-      border-bottom: 1px solid $bc;
-      .pois_name{
-        margin: 0 auto 0.35rem;
-        width: 90%;
-        @include sc(0.65rem, #333);
-      }
-      .pois_address{
-        width: 90%;
-        margin: 0 auto 0.55rem;
-        @include sc(0.45rem, #999);
-      }
-    }
-  }
-  .search_none_place{
-    margin: 0 auto;
-    @include font(0.65rem, 1.75rem);
-    color: #333;
-    background-color: #fff;
-    text-indent: 0.5rem;
-  }
-</style>
