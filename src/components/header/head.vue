@@ -21,7 +21,7 @@
         <!--<slot name="changecity"></slot>-->
         <!--<slot name="changeLogin"></slot>-->
     <!--</header>-->
-  <yd-navbar v-bind:title="headTitle" fixed bgcolor="#3190e8" color="#fff"></yd-navbar>
+  <yd-navbar v-bind:title="headTitle" bgcolor="#3190e8" color="#fff"></yd-navbar>
 </template>
 
 <script>

@@ -2,6 +2,8 @@ import App from '../App'
 
 const home = r => require.ensure([], () => r(require('../page/home/home')), 'home')
 const city = r => require.ensure([], () => r(require('../page/city/city')), 'city')
+const carInfo = r => require.ensure([], () => r(require('../page/car-info/car-info')), 'car-info')
+const riskInfo = r => require.ensure([], () => r(require('../page/risk-info/risk-info')), 'risk-info')
 
 
 export default [{
@@ -27,6 +29,16 @@ export default [{
     {
       path: '/city',
       component: city
+    },
+    //车辆信息填写
+    {
+      path: '/car-info',
+      component: carInfo
+    },
+    //险种信息填写
+    {
+      path: '/risk-info',
+      component: riskInfo
     },
   ]
 }]
