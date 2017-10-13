@@ -18,9 +18,9 @@
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">商业险：</span>
-        <yd-switch slot="right" v-model="busnessInsureSwitch"></yd-switch>
+        <yd-switch slot="right" v-model="businessInsureSwitch"></yd-switch>
       </yd-cell-item>
-      <yd-cell-item v-show="busnessInsureSwitch" arrow>
+      <yd-cell-item v-show="businessInsureSwitch" arrow>
         <span slot="left">生效日期：</span>
         <yd-datetime type="date" v-model="transferDate" :startDate="lastYearDate" :endDate="nowDate" slot="right">请选择生效日期</yd-datetime>
       </yd-cell-item>
@@ -216,7 +216,7 @@
         checkboxSize: 13,
         plateNo:'', // 车牌号码
         baseInsureSwitch:true, // 交强险
-        busnessInsureSwitch:true, // 商业险
+        businessInsureSwitch:true, // 商业险
         placeHistory:[], // 历史搜索记录
         historytitle: true, // 默认显示搜索历史头部，点击搜索后隐藏
         placeNone: false, // 搜索无结果，显示提示信息

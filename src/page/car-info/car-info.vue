@@ -10,7 +10,7 @@
     <yd-cell-group title="车主信息">
       <yd-cell-item>
         <span slot="left">车主姓名：</span>
-        <yd-input slot="right" required v-model="ownerName" min="5" max="5" placeholder="请输入车主姓名"></yd-input>
+        <yd-input slot="right" required v-model="ownerName" min="2" max="5" placeholder="请输入车主姓名"></yd-input>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">身份证号：</span>
@@ -59,7 +59,7 @@
         <yd-switch slot="right" v-model="insureSwitch"></yd-switch>
       </yd-cell-item>
       <div v-show="!insureSwitch">
-        <yd-cell-item >
+        <yd-cell-item>
           <span slot="left">投保人：</span>
           <yd-input slot="right" v-model="insureName" min="2" max="6" placeholder="请输入投保人姓名"></yd-input>
         </yd-cell-item>
@@ -78,16 +78,16 @@
         </yd-cell-item>
         <div v-show="!insuredSwitch">
           <yd-cell-item >
-            <span slot="left">投保人：</span>
-            <yd-input slot="right" v-model="insuredName" min="2" max="6" placeholder="请输入投保人姓名"></yd-input>
+            <span slot="left">被保险人：</span>
+            <yd-input slot="right" :required="!insuredSwitch" v-model="insuredName" max="6" placeholder="请输入被保险人姓名"></yd-input>
           </yd-cell-item>
           <yd-cell-item>
             <span slot="left">身份证号：</span>
-            <yd-input slot="right" v-model="insuredIdentity" regex="^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$" placeholder="请输入身份证号"></yd-input>
+            <yd-input slot="right" :required="!insuredSwitch" v-model="insuredIdentity" regex="^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$" placeholder="请输入身份证号"></yd-input>
           </yd-cell-item>
           <yd-cell-item>
             <span slot="left">手机号码：</span>
-            <yd-input slot="right" v-model="insuredMobile" regex="mobile" placeholder="请输入手机号码"></yd-input>
+            <yd-input slot="right" :required="!insuredSwitch" v-model="insuredMobile" regex="mobile" placeholder="请输入手机号码"></yd-input>
           </yd-cell-item>
       </div>
     </yd-cell-group>
@@ -151,12 +151,15 @@
     },
     //通过路由的before钩子解除router-view缓存限制
     beforeRouteLeave(to, from, next){
-      console.log(to.path + ":" + from.path);
-      //this.$destroy()
+      console.log(to.path.indexOf("home"));
+      if(to.path.indexOf("home") > -1) {
+        this.$destroy()
+      }
       next()
     },
     mounted(){
       let hasPlateNo = getStore('hasPlateNo');
+      console.log(hasPlateNo);
       if(hasPlateNo === "false"){
         this.plateNo ="新车未上牌";
       }else if (getStore('plateNo')) {//获取车牌号码
