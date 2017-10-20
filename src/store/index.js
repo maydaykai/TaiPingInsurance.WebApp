@@ -9,6 +9,7 @@ Vue.use(Vuex)
 const state = {
   hasPlateNo:true,//是否有车牌号码
   plateNo:'', //车牌号码
+  frameNo:"", //车辆识别号
 }
 
 export default new Vuex.Store({

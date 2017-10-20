@@ -1,7 +1,7 @@
 <template>
   <yd-layout>
     <head-top :head-title="title"></head-top>
-    <yd-cell-group v-bind:style="{ margin: '1rem 0 .25rem' }">
+    <yd-cell-group :style="{ margin: '1rem 0 .25rem' }">
       <yd-cell-item>
         <span slot="right"></span>
         <span slot="left" v-model="plateNo">{{ plateNo }}</span>
@@ -22,13 +22,13 @@
       </yd-cell-item>
     </yd-cell-group>
     <yd-cell-group title="车辆信息">
-      <yd-cell-item>
+      <yd-cell-item arrow type="link" href="car-identification-number">
         <span slot="left">车辆识别代号：</span>
-        <yd-input slot="right" required v-model="frameNo" min="17" max="17" placeholder="请输入车辆识别代号"></yd-input>
+        <span slot="right" v-model="frameNo">{{frameNo}}</span>
       </yd-cell-item>
-      <yd-cell-item>
+      <yd-cell-item arrow type="link" href="car-model">
         <span slot="left">车型/价格：</span>
-        <yd-input slot="right" required v-model="input1" min="5" max="5" placeholder="请输入车牌号"></yd-input>
+        <span slot="right" v-model="frameNo">{{frameNo}}<br />{{frameNo}}</span><br /><span slot="right" v-model="frameNo">{{frameNo}}</span>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">座位数：</span>
@@ -116,6 +116,7 @@
   import {currentcity, searchplace, groupcity} from '@/service/getData'
   import {getStore, setStore} from '@/config/mUtils'
   import getcity from '@/service/tempdata/home'
+  import {mapState, mapMutations} from 'vuex'
 
   export default {
     data(){
@@ -127,7 +128,7 @@
         lastYearDate:lastYearDate,
         title:'信息填写', // 标题
         plateNo:'', // 车牌号码
-        frameNo:'', //车辆识别号
+        //frameNo:'', //车辆识别号
         seat:0, //座位数
         engineNo:'', //发动机号
         nextStep: false,
@@ -161,7 +162,7 @@
       let hasPlateNo = getStore('hasPlateNo');
       console.log(hasPlateNo);
       if(hasPlateNo === "false"){
-        this.plateNo ="新车未上牌";
+        this.plateNo ="暂未上牌";
       }else if (getStore('plateNo')) {//获取车牌号码
         this.plateNo = getStore('plateNo');
       }
@@ -173,7 +174,9 @@
     },
 
     computed:{
-
+      ...mapState([
+        'frameNo',
+      ]),
     },
 
     methods:{

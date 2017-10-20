@@ -32,6 +32,7 @@ import {
   SAVE_PLATE_NUMBER,
   INIT_HAS_PLATE_NUMBER,
   INIT_PLATE_NUMBER,
+  SAVE_FRAME_NUMBER,
 } from './mutation-types.js'
 
 import {
@@ -63,5 +64,9 @@ export default {
     if (initPlateNo) {
       state.plateNo = initPlateNo;
     }
+  },
+  //保存车辆识别号
+  [SAVE_FRAME_NUMBER](state, frameNo){
+      state.frameNo = frameNo;
   }
 }

@@ -21,7 +21,7 @@
   <!--<slot name="changecity"></slot>-->
   <!--<slot name="changeLogin"></slot>-->
   <!--</header>-->
-  <yd-navbar v-bind:title="headTitle" fixed>
+  <yd-navbar slot="navbar" :title="headTitle" fixed>
       <section @click="$router.go(-1)" slot="left">
         <yd-navbar-back-icon></yd-navbar-back-icon>
       </section>

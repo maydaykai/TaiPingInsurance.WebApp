@@ -34,6 +34,13 @@
         platePre: "粤B",
       }
     },
+    watch: {
+      plateNo: function (val, oldVal) {
+        if(val){
+          this.plateNo = val.toUpperCase();
+        }
+      }
+    },
 
     mounted(){
       this.cityid = this.$route.params.cityid;

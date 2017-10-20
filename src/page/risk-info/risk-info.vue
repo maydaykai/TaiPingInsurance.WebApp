@@ -206,7 +206,7 @@
   import headTop from "@/components/header/backHead"
   import footGuide from "@/components/footer/footGuide"
   import {currentcity, searchplace, groupcity} from '@/service/getData'
-  import {getStore, setStore} from '@/config/mUtils'
+  import {getStore, setStore, goTop} from '@/config/mUtils'
   import getcity from '@/service/tempdata/home'
 
   export default {
@@ -233,6 +233,7 @@
     },
 
     mounted(){
+      goTop();
       let hasPlateNo = getStore('hasPlateNo');
       if(hasPlateNo === "false"){
         this.plateNo ="新车未上牌";
@@ -289,7 +290,7 @@
       clickHander() {
         this.$dialog.loading.open('很快加载好了');
 
-        this.$router.push({path:'/home'});
+        this.$router.push({path:'/quoted-price'});
         this.$dialog.loading.close();
 
       }
