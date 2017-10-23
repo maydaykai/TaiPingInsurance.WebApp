@@ -10,15 +10,15 @@
     <yd-cell-group title="车主信息">
       <yd-cell-item>
         <span slot="left">车主姓名：</span>
-        <yd-input slot="right" required v-model="ownerName" min="2" max="5" placeholder="请输入车主姓名"></yd-input>
+        <yd-input slot="right" required v-model="ownerName" ref="ownerName" min="2" max="5" placeholder="请输入车主姓名"></yd-input>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">身份证号：</span>
-        <yd-input slot="right" required v-model="ownerIdentity" regex="^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$" placeholder="请输入身份证号"></yd-input>
+        <yd-input slot="right" required v-model="ownerIdentity" ref="ownerIdentity" min="15" max="18" regex="(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)" placeholder="请输入身份证号"></yd-input>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">手机号码：</span>
-        <yd-input slot="right" required v-model="ownerMobile" regex="mobile" placeholder="请输入手机号码"></yd-input>
+        <yd-input slot="right" required v-model="ownerMobile" ref="ownerMobile" regex="mobile" placeholder="请输入手机号码"></yd-input>
       </yd-cell-item>
     </yd-cell-group>
     <yd-cell-group title="车辆信息">
@@ -36,11 +36,11 @@
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">发动机号：</span>
-        <yd-input slot="right" required v-model="engineNo" min="5" max="20" placeholder="请输入发动机号"></yd-input>
+        <yd-input slot="right" required v-model="engineNo" ref="engineNo" min="5" max="20" placeholder="请输入发动机号"></yd-input>
       </yd-cell-item>
       <yd-cell-item arrow>
         <span slot="left">注册日期：</span>
-        <yd-datetime type="date" required v-model="registerDate" startDate="2000-01-01" :endDate="nowDate" slot="right"></yd-datetime>
+        <yd-datetime type="date" v-model="registerDate" startDate="2000-01-01" :endDate="nowDate" slot="right"></yd-datetime>
       </yd-cell-item>
       <yd-cell-item>
         <div slot="left">是否一年内过户车：</div>
@@ -216,11 +216,26 @@
         this.$router.push({path:'/msite', query:{geohash}})
       },
       clickHander() {
+        let validate = this.YDUIFormValidate(this.$refs);
+        if(!validate)return;
         this.$dialog.loading.open('很快加载好了');
 
         this.$router.push({path:'/risk-info'});
         this.$dialog.loading.close();
 
+      },
+      YDUIFormValidate(refObj) {
+        for(var item in refObj){
+          let obj = refObj[item];
+          if(!obj.valid){
+            this.$dialog.toast({
+              mes: (obj.placeholder ? obj.placeholder.replace('请输入','').replace('请选择','') : '')+obj.errorMsg,
+              timeout: 1500
+            });
+            return false;
+          }
+        }
+        return true;
       }
     }
   }
