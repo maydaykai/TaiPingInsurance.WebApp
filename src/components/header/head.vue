@@ -21,7 +21,22 @@
         <!--<slot name="changecity"></slot>-->
         <!--<slot name="changeLogin"></slot>-->
     <!--</header>-->
-  <yd-navbar slot="navbar" :title="headTitle" bgcolor="#3190e8" color="#fff"></yd-navbar>
+  <!--<yd-navbar slot="navbar" :title="headTitle" bgcolor="#3190e8" color="#fff"></yd-navbar>-->
+  <yd-navbar slot="navbar" :title="headTitle">
+    <!--<div @click="$router.go(-1)" slot="left">-->
+      <yd-navbar-back-icon @click.native="$router.go(-1)" slot="left"></yd-navbar-back-icon>
+    <!--</div>-->
+    <!--<router-link to="#" slot="right" @click.native="show2">-->
+      <!--<yd-navbar-next-icon>前进</yd-navbar-next-icon>-->
+    <!--</router-link>-->
+    <!--<section @click.native="show2 = true" slot="right">-->
+      <yd-icon name="type" @click.native="showMenu = true" size="25px" color="#777" slot="right"></yd-icon>
+      <!--<yd-button size="large" type="danger" @click.native="show2 = true">右侧弹出</yd-button>-->
+    <!--</section>-->
+    <yd-popup v-model="showMenu" position="right">
+      <yd-button type="danger" style="margin: 30px;" @click.native="showMenu = false">Close Right Popup</yd-button>
+    </yd-popup>
+  </yd-navbar>
 </template>
 
 <script>
@@ -29,12 +44,12 @@
     export default {
     	data(){
             return{
-
+              showMenu: false
             }
         },
         created(){
             //获取用户信息
-            this.getUserInfo();
+//            this.getUserInfo();
 
         },
         mounted(){
@@ -50,6 +65,9 @@
             ...mapActions([
                 'getUserInfo'
             ]),
+            changeState(){
+              this.showMenu = true;
+            }
         },
 
     }

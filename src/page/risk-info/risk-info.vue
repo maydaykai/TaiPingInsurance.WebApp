@@ -14,7 +14,7 @@
       </yd-cell-item>
       <yd-cell-item v-show="baseInsureSwitch" arrow>
         <span slot="left">生效日期：</span>
-        <yd-datetime type="date" v-model="transferDate" :startDate="lastYearDate" :endDate="nowDate" slot="right">请选择生效日期</yd-datetime>
+        <yd-datetime type="date" v-model="baseBeginDate" :startDate="lastYearDate" :endDate="nowDate" slot="right">请选择生效日期</yd-datetime>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">商业险：</span>
@@ -22,10 +22,10 @@
       </yd-cell-item>
       <yd-cell-item v-show="businessInsureSwitch" arrow>
         <span slot="left">生效日期：</span>
-        <yd-datetime type="date" v-model="transferDate" :startDate="lastYearDate" :endDate="nowDate" slot="right">请选择生效日期</yd-datetime>
+        <yd-datetime type="date" v-model="businessBeginDate" :startDate="lastYearDate" :endDate="nowDate" slot="right">请选择生效日期</yd-datetime>
       </yd-cell-item>
     </yd-cell-group>
-    <yd-cell-group title="商业险套餐">
+    <yd-cell-group title="商业险套餐" v-show="businessInsureSwitch">
       <yd-flexbox v-bind:style="{'margin-left': '5%'}">
         <yd-flexbox-item>
           <yd-checkbox v-model="checkbox1" :size="checkboxSize">车辆损失险</yd-checkbox>
@@ -117,14 +117,14 @@
         </div>
       </yd-flexbox>
     </yd-cell-group>
-    <yd-cell-group>
+    <yd-cell-group  v-show="businessInsureSwitch">
       <yd-flexbox v-bind:style="{'margin-left': '5%'}">
         <yd-flexbox-item>
           <yd-checkbox v-model="checkbox1" :size="checkboxSize">玻璃破碎险</yd-checkbox>
         </yd-flexbox-item>
         <div style="width:20%">
           <yd-cell-item arrow type="label">
-            <select slot="right">
+            <select slot="right" v-model="ff">
               <option value="0">国产</option>
               <option value="1">进口</option>
             </select>
@@ -211,18 +211,17 @@
 
   export default {
     data(){
+      let now = new Date();
+      let nowDate = now.toLocaleDateString();
+      let lastYearDate = new Date(now.setFullYear(now.getFullYear() - 1)).toLocaleDateString();
       return{
         title:'选择套餐', // 标题
         checkboxSize: 13,
         plateNo:'', // 车牌号码
         baseInsureSwitch:true, // 交强险
         businessInsureSwitch:true, // 商业险
-        placeHistory:[], // 历史搜索记录
-        historytitle: true, // 默认显示搜索历史头部，点击搜索后隐藏
-        placeNone: false, // 搜索无结果，显示提示信息
-        input1:'',
-        input2:'',
-        nextStep: false,
+        baseBeginDate:nowDate,
+        businessBeginDate:nowDate,
         insuredSwitch: true,
       }
     },
