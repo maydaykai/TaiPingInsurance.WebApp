@@ -31,7 +31,7 @@
     <div>
       <yd-popup v-model="showMenu" position="right">
         <yd-cell-item>
-          <span slot="left"><yd-icon name="error-outline" size="25px" color="#777"></yd-icon></span>
+          <span slot="left"><yd-icon @click.native="showMenu = false" name="error-outline" size="25px" color="#777"></yd-icon></span>
         </yd-cell-item>
         <yd-cell-item @click.native="$router.push({ path: '/home' })">
           <span slot="left"><yd-icon name="home-outline" size="25px" color="#f44336" style="margin-right:10px"></yd-icon>首页</span>
