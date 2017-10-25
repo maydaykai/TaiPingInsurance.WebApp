@@ -117,6 +117,7 @@
   import {getStore, setStore} from '@/config/mUtils'
   import getcity from '@/service/tempdata/home'
   import {mapState, mapMutations} from 'vuex'
+  import {judgeQuotetion} from '@/service/getApiData'
 
   export default {
     data(){
@@ -165,6 +166,22 @@
         this.plateNo ="暂未上牌";
       }else if (getStore('plateNo')) {//获取车牌号码
         this.plateNo = getStore('plateNo');
+        var url = "http://localhost:8006/car/judgeQuotetion";
+        this.$http.get(url,{
+          params: {
+            licenseNo: this.plateNo
+          }
+        }).then(response => {
+          console.log(response);
+          if(response.data.success){
+            var data = JSON.parse(response.data.data);
+            //alert(data.status);
+          }else{
+            //alert(response.data.message);
+          }
+        }, error => {
+          console.log(error);
+        });
       }
     },
 

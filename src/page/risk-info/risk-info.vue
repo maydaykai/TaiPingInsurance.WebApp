@@ -28,10 +28,10 @@
     <yd-cell-group title="商业险套餐" v-show="businessInsureSwitch">
       <yd-flexbox v-bind:style="{'margin-left': '5%'}">
         <yd-flexbox-item>
-          <yd-checkbox v-model="checkbox1" :size="checkboxSize">车辆损失险</yd-checkbox>
+          <yd-checkbox v-model="coverageA" :size="checkboxSize">车辆损失险</yd-checkbox>
         </yd-flexbox-item>
         <yd-flexbox-item>
-          <yd-checkbox v-model="checkbox1" :size="checkboxSize">不计免赔</yd-checkbox>
+          <yd-checkbox v-model="coverageMA" :size="checkboxSize">不计免赔</yd-checkbox>
         </yd-flexbox-item>
         <div style="width:20%">
           <yd-cell-item>
@@ -41,14 +41,14 @@
       </yd-flexbox>
       <yd-flexbox v-bind:style="{'margin-left': '5%'}">
         <yd-flexbox-item>
-          <yd-checkbox v-model="checkbox1" :size="checkboxSize">第三者责任险</yd-checkbox>
+          <yd-checkbox v-model="coverageB" :size="checkboxSize">第三者责任险</yd-checkbox>
         </yd-flexbox-item>
         <yd-flexbox-item>
-          <yd-checkbox v-model="checkbox1" :size="checkboxSize">不计免赔</yd-checkbox>
+          <yd-checkbox v-model="coverageMB" :size="checkboxSize">不计免赔</yd-checkbox>
         </yd-flexbox-item>
         <div style="width:20%">
           <yd-cell-item arrow type="label">
-            <select slot="right">
+            <select slot="right" v-model="coverageAmountB">
               <option value="5000000">5万</option>
               <option value="10000000">10万</option>
               <option value="20000000">20万</option>
@@ -63,14 +63,14 @@
       </yd-flexbox>
       <yd-flexbox v-bind:style="{'margin-left': '5%'}">
         <yd-flexbox-item>
-          <yd-checkbox v-model="checkbox1" :size="checkboxSize">司机责任险</yd-checkbox>
+          <yd-checkbox v-model="coverageD3" :size="checkboxSize">司机责任险</yd-checkbox>
         </yd-flexbox-item>
         <yd-flexbox-item>
-          <yd-checkbox v-model="checkbox1" :size="checkboxSize">不计免赔</yd-checkbox>
+          <yd-checkbox v-model="coverageMD3" :size="checkboxSize">不计免赔</yd-checkbox>
         </yd-flexbox-item>
         <div style="width:20%">
           <yd-cell-item arrow type="label">
-            <select slot="right">
+            <select slot="right" v-model="coverageAmountD3">
               <option value="1000000">1万</option>
               <option value="2000000">2万</option>
               <option value="3000000">3万</option>
@@ -84,14 +84,14 @@
       </yd-flexbox>
       <yd-flexbox v-bind:style="{'margin-left': '5%'}">
         <yd-flexbox-item>
-          <yd-checkbox v-model="checkbox1" :size="checkboxSize">乘客责任险</yd-checkbox>
+          <yd-checkbox v-model="coverageD4" :size="checkboxSize">乘客责任险</yd-checkbox>
         </yd-flexbox-item>
         <yd-flexbox-item>
-          <yd-checkbox v-model="checkbox1" :size="checkboxSize">不计免赔</yd-checkbox>
+          <yd-checkbox v-model="coverageMD4" :size="checkboxSize">不计免赔</yd-checkbox>
         </yd-flexbox-item>
         <div style="width:20%">
           <yd-cell-item arrow type="label">
-            <select slot="right">
+            <select slot="right" v-model="coverageAmountD4">
               <option value="1000000">1万/座</option>
               <option value="2000000">2万/座</option>
               <option value="3000000">3万/座</option>
@@ -105,10 +105,10 @@
       </yd-flexbox>
       <yd-flexbox v-bind:style="{'margin-left': '5%'}">
         <yd-flexbox-item>
-          <yd-checkbox v-model="checkbox1" :size="checkboxSize">全车盗抢险</yd-checkbox>
+          <yd-checkbox v-model="coverageG1" :size="checkboxSize">全车盗抢险</yd-checkbox>
         </yd-flexbox-item>
         <yd-flexbox-item>
-          <yd-checkbox v-model="checkbox1" :size="checkboxSize">不计免赔</yd-checkbox>
+          <yd-checkbox v-model="coverageMG1" :size="checkboxSize">不计免赔</yd-checkbox>
         </yd-flexbox-item>
         <div style="width:20%">
           <yd-cell-item>
