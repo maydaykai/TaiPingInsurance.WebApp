@@ -1,38 +1,12 @@
 import {
-	RECORD_ADDRESS,
-	ADD_CART,
-	REDUCE_CART,
-	INIT_BUYCART,
-	CLEAR_CART,
-	RECORD_SHOPDETAIL,
-	RECORD_USERINFO,
-	GET_USERINFO,
-	CONFIRM_REMARK,
-	CONFIRM_INVOICE,
-	CHOOSE_SEARCH_ADDRESS,
-	SAVE_GEOHASH,
-	CONFIRM_ADDRESS,
-	CHOOSE_ADDRESS,
-	NEED_VALIDATION,
-	SAVE_CART_ID_SIG,
-	SAVE_ORDER_PARAM,
-	CHANGE_ORDER_PARAM,
-	ORDER_SUCCESS,
-	SAVE_SHOPID,
-	SAVE_ORDER,
-	OUT_LOGIN,
-	RETSET_NAME,
-	SAVE_AVANDER,
-	SAVE_ADDRESS,
-	SAVE_ADDDETAIL,
-	SAVE_QUESTION,
-	ADD_ADDRESS,
-	BUY_CART,
   SAVE_HAS_PLATE_NUMBER,
   SAVE_PLATE_NUMBER,
   INIT_HAS_PLATE_NUMBER,
   INIT_PLATE_NUMBER,
   SAVE_FRAME_NUMBER,
+  SAVE_MODEL_NAME,
+  SAVE_ORDER_NUMBER,
+  SAVE_IDENTIFY_NUMBER,
 } from './mutation-types.js'
 
 import {
@@ -68,5 +42,17 @@ export default {
   //保存车辆识别号
   [SAVE_FRAME_NUMBER](state, frameNo){
       state.frameNo = frameNo;
-  }
+  },
+  //保存车型名称
+  [SAVE_MODEL_NAME](state, modelName){
+      state.modelName = modelName;
+  },
+  //保存订单编号
+  [SAVE_ORDER_NUMBER](state, orderNo){
+    state.orderNo = orderNo;
+  },
+  //保存身份证号码
+  [SAVE_IDENTIFY_NUMBER](state, identifyNumber){
+    state.identifyNumber = identifyNumber;
+  },
 }

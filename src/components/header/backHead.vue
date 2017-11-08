@@ -23,9 +23,9 @@
   <!--</header>-->
   <yd-layout>
   <yd-navbar slot="navbar" :title="headTitle" fixed>
-      <section @click="$router.go(-1)" slot="left">
-        <yd-navbar-back-icon @click="$router.go(-1)" slot="left"></yd-navbar-back-icon>
-      </section>
+    <section @click="$router.go(-1)" slot="left" v-if="goBack">
+      <yd-navbar-back-icon @click="$router.go(-1)" slot="left"></yd-navbar-back-icon>
+    </section>
     <yd-icon name="type" @click.native="showMenu = true" size="25px" color="#777" slot="right"></yd-icon>
   </yd-navbar>
     <div>
@@ -33,10 +33,10 @@
         <yd-cell-item>
           <span slot="left"><yd-icon @click.native="showMenu = false" name="error-outline" size="25px" color="#777"></yd-icon></span>
         </yd-cell-item>
-        <yd-cell-item @click.native="$router.push({ path: '/home' })">
+        <yd-cell-item @click.native="showMenu = false;$router.push({ path: '/home' })">
           <span slot="left"><yd-icon name="home-outline" size="25px" color="#f44336" style="margin-right:10px"></yd-icon>首页</span>
         </yd-cell-item>
-        <yd-cell-item @click.native="$router.push({ path: '/me' })">
+        <yd-cell-item @click.native="showMenu = false;$router.push({ path: '/me' })">
           <span slot="left"><yd-icon name="ucenter-outline" size="25px" color="#f44336" style="margin-right:10px"></yd-icon>我的</span>
         </yd-cell-item>
         <yd-cell-item>
@@ -53,23 +53,6 @@
     data(){
       return{
         showMenu:false,
-        myItems2: [
-          {
-            label: '示例菜单一 - 我是不会关闭的',
-            callback: () => {
-              this.$dialog.toast({mes: 'Say: 我是不会关闭的！'});
-            },
-            stay: true /* 不关闭 */
-          },
-          {
-            label: '示例菜单二 - 自动关闭',
-            callback: () => {
-              this.$dialog.toast({mes: 'Say: 我关闭啦啦啦！'});
-            }
-          },
-          {label: '示例菜单三 - 自动关闭'},
-          {label: '示例菜单四 - 自动关闭'}
-        ]
       }
     },
     created(){
@@ -78,7 +61,13 @@
     mounted(){
 
     },
-    props: ['headTitle'],
+    props: {
+      headTitle:{
+        required: true
+      }, goBack:{
+        default: true
+      }
+     },
     computed: {
     },
     methods: {

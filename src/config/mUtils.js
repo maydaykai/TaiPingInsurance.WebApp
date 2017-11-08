@@ -1,3 +1,4 @@
+import { Confirm, Alert, Toast, Notify, Loading } from 'vue-ydui/dist/lib.rem/dialog';
 /**
  * 存储localStorage
  */
@@ -276,4 +277,17 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
 }
 export const goTop = () =>{
   window.scrollTo(0, 0);
+}
+export const YDUIFormValidate = (refObj) => {
+  for(var item in refObj){
+    let obj = refObj[item];
+    if(!obj.valid){
+      Toast({
+        mes: (obj.placeholder ? obj.placeholder.replace('请输入','').replace('请选择','') : '')+obj.errorMsg,
+        timeout: 1500
+      });
+      return false;
+    }
+  }
+  return true;
 }

@@ -3,16 +3,38 @@
     <head-top :head-title="title"></head-top>
     <yd-cell-group :style="{ margin: '.5rem 0 .25rem' }">
       <yd-cell-item>
-        <span slot="left">手机号码：</span>
-        <yd-input slot="right" type="tel" required v-model="mobile" regex="mobile" ref="mobile" placeholder="请输入手机号码"></yd-input>
+        <yd-icon slot="icon" name="phone3" size=".45rem"></yd-icon>
+        <input type="text" slot="right" placeholder="请输入手机号码">
+
+        <!-- ↓↓关键代码是这里↓↓ -->
+        <yd-sendcode slot="right"
+                     v-model="start"
+                     @click.native="sendCode"
+                     type="warning"
+        ></yd-sendcode>
+        <!-- ↑↑关键代码是这里↑↑ -->
+      </yd-cell-item>
+      <yd-cell-item>
+        <span slot="left">短信验证码：</span>
+        <yd-input slot="right" required v-model="msmCode" min="6" max="6" placeholder="请输入短信验证码"></yd-input>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">密码：</span>
-        <yd-input slot="right" type="password" required v-model="password" min="6" max="16" ref="password" placeholder="请输入密码"></yd-input>
+        <yd-input slot="right" required v-model="msmCode" min="6" max="6" placeholder="请输入密码"></yd-input>
+      </yd-cell-item>
+      <yd-cell-item>
+        <span slot="left">确认密码：</span>
+        <yd-input slot="right" required v-model="msmCode" min="6" max="6" placeholder="请输入确认密码"></yd-input>
       </yd-cell-item>
     </yd-cell-group>
+    <yd-grids-group :rows="3" item-height="10px">
+    <yd-grids-item>
+      <span slot="text">grids-3</span>
+    </yd-grids-item>
+  </yd-grids-group>
     <yd-button-group>
-      <yd-button size="large" @click.native="clickHander">立即登录</yd-button>
+      <yd-button v-if="!nextStep" size="large" @click.native="clickHander">立即查价</yd-button>
+      <yd-button v-else size="large" @click.native="clickHander">下一步</yd-button>
     </yd-button-group>
   </yd-layout>
 </template>
@@ -25,9 +47,10 @@
   export default {
     data(){
       return{
-        title:'登录', // 标题
-        mobile:'',//手机号码
-        password:'',//密码
+        title:'用户注册', // 标题
+        mobile:'',//车主手机号码
+        msmCode:'',//车主姓名
+        start:false,
       }
     },
     //通过路由的before钩子解除router-view缓存限制

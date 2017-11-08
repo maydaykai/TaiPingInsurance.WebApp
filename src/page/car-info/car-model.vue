@@ -34,12 +34,12 @@
     data(){
       return{
         title:'品牌型号', // 标题
-        modelNoDialog:false,
+        frameNoDialog:false,
         modelNo:'',
       }
     },
     mounted(){
-
+      this.modelNo = this.modelName;
     },
 
     components:{
@@ -48,27 +48,12 @@
     },
 
     computed:{
+      ...mapState([
+        'modelName'
+      ]),
     },
 
     methods:{
-      ...mapMutations([
-        'SAVE_FRAME_NUMBER'
-      ]),
-      clickHander() {
-//        const input = this.$refs.modelNo;
-//        if(!input.valid){
-//          this.$dialog.toast({
-//            mes: '车辆识别代号'+input.errorMsg,
-//            timeout: 1500
-//          });
-//          return;
-//        }
-        this.$dialog.loading.open('很快加载好了');
-        this.SAVE_FRAME_NUMBER(this.modelNo);
-        this.$router.replace({path:'/car-model-list'});
-        this.$dialog.loading.close();
-
-      }
     }
   }
 

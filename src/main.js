@@ -8,30 +8,10 @@ import store from './store/'
 import FastClick from 'fastclick'
 import YDUI from 'vue-ydui';
 import 'vue-ydui/dist/ydui.rem.css';
-import axios from 'axios'
-//添加请求拦截器
-// axios.interceptors.request.use(function(config){
-//   //在发送请求之前做某事
-//   this.$dialog.loading.open('正在加载车辆信息，请稍后');
-//   return config;
-// },function(error){
-//   //请求错误时做些事
-//   return Promise.reject(error);
-// });
-//
-// //添加响应拦截器
-// axios.interceptors.response.use(function(response){
-//   //对响应数据做些事
-//   this.$dialog.loading.close();
-//   return response;
-// },function(error){
-//   //请求错误时做些事
-//   return Promise.reject(error);
-// });
-
-Vue.prototype.$http = axios;
+import axiosPlugin from "./service";
 /* 使用px：import 'vue-ydui/dist/ydui.px.css'; */
 Vue.use(YDUI);
+Vue.use(axiosPlugin);
 
 if ('addEventListener' in document) {
   document.addEventListener('DOMContentLoaded', function() {

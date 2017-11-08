@@ -1,16 +1,19 @@
 <template>
   <yd-layout>
     <head-top :head-title="title"></head-top>
-      <yd-cell-group :style="{ margin: '.5rem 0 .25rem' }">
-        <yd-pullrefresh :callback="getPrice" ref="pullrefresh">
-        <yd-flexbox>
-          <div style="padding: 0.1rem 0 0 .24rem;"><img src="../../assets/images/tplogo.png" height="60" /><span class="yd-navbar-center">中国太平</span></div>
-          <yd-flexbox-item><p style="color:#f6ab1a;font-size: .75rem;text-align:right;padding-right: .3rem">{{totalAmount}}<i style="color:#f6ab1a;font-size: .25rem;">元</i></p></yd-flexbox-item>
-          <div style="padding-right: 0.24rem;"><yd-button type="primary" @click.native="clickHander">确认报价</yd-button></div>
-        </yd-flexbox>
-        <div class="car-quote-operate yd-accordion-head">查看报价明细<i class="yd-accordion-rotated"></i></div>
-        </yd-pullrefresh>
-      </yd-cell-group>
+    <yd-list theme="4"> /* 这里可选1/2/3/4/5五种样式 */
+      <yd-list-item v-for="item, key in list" :key="key">
+        <img slot="img" :src="item.img">
+        <span slot="title">{{item.title}}</span>
+        <yd-list-other slot="other">
+          <div>
+            <span class="demo-list-price"><em>¥</em>{{item.price}}</span>
+            <span class="demo-list-del-price">¥{{item.w_price}}</span>
+          </div>
+          <div>content</div>
+        </yd-list-other>
+      </yd-list-item>
+    </yd-list>
   </yd-layout>
 </template>
 
@@ -24,12 +27,10 @@
       return{
         title:'选择报价', // 标题
         totalAmount:0,
+        list: [
+
+        ],
       }
-    },
-    //通过路由的before钩子解除router-view缓存限制
-    beforeRouteLeave(to, from, next){
-      this.$destroy()
-      next()
     },
 
     mounted(){

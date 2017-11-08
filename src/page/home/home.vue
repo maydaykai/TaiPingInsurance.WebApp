@@ -1,7 +1,7 @@
 <template>
   <yd-layout>
-    <head-top :head-title="cityname"></head-top>
-    <yd-cell-group>
+    <head-top :head-title="cityname" :go-back=false></head-top>
+    <yd-cell-group :style="{ margin: '.5rem 0 .25rem' }">
       <yd-cell-item>
         <div slot="left">是否未上牌</div>
         <yd-switch slot="right" v-model="plateSwitch"></yd-switch>
@@ -18,11 +18,12 @@
 </template>
 
 <script>
-  import headTop from "@/components/header/head"
+  import headTop from "@/components/header/backHead"
   import footGuide from "@/components/footer/footGuide"
   import {currentcity, searchplace, groupcity} from '@/service/getData'
   import {getStore, setStore} from '@/config/mUtils'
   import getcity from '@/service/tempdata/home'
+  import {mapState, mapMutations} from 'vuex'
 
   export default {
     data(){
@@ -69,9 +70,15 @@
     },
 
     computed:{
+      ...mapState([
+        'frameNo','modelName'
+      ]),
 
     },
     methods:{
+      ...mapMutations([
+        'SAVE_HAS_PLATE_NUMBER','SAVE_PLATE_NUMBER','SAVE_MODEL_NAME'
+      ]),
       clickHander() {
         const input = this.$refs.plateNo;
         let hasPlateNo = !this.plateSwitch;
@@ -84,9 +91,23 @@
         }
         this.$dialog.loading.open('很快加载好了');
         let plateNo = this.platePre + this.plateNo;
-        setStore("hasPlateNo",hasPlateNo);
-        setStore("plateNo",plateNo);
-        this.$router.push({path:'/car-info'});
+        this.SAVE_HAS_PLATE_NUMBER(hasPlateNo);
+        this.SAVE_PLATE_NUMBER(plateNo);
+        var url = "judgeQuotetion";
+        this.$http.get(url,{
+          params: {
+            licenseNo: plateNo
+          }
+        }).then(response => {
+          console.log(response);
+          if(response.data.success){
+            var data = JSON.parse(response.data.data);
+            this.SAVE_MODEL_NAME(data.brandName);
+            this.$router.push({path:'/car-owner'});
+          }else{
+            this.$router.push({path:'/car-info'});
+          }
+        });
         this.$dialog.loading.close();
       },
     }

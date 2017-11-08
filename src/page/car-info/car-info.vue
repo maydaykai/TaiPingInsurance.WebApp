@@ -28,11 +28,13 @@
       </yd-cell-item>
       <yd-cell-item arrow type="link" href="car-model">
         <span slot="left">车型/价格：</span>
-        <span slot="right" v-model="frameNo">{{frameNo}}<br />{{frameNo}}</span><br /><span slot="right" v-model="frameNo">{{frameNo}}</span>
+        <span slot="right" v-model="modelName">{{modelName}}</span>
+        <!--<br /><span slot="right" v-model="modelName"></span>-->
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">座位数：</span>
-        <yd-input slot="right" type="number" required v-model="seat" placeholder="请输入座位数"></yd-input>
+        <yd-spinner slot="right" max="10" unit="1" v-model="seat"></yd-spinner>
+        <!--<yd-input slot="right" type="number" required v-model="seat" placeholder="请输入座位数"></yd-input>-->
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">发动机号：</span>
@@ -128,9 +130,9 @@
         nowDate: nowDate,
         lastYearDate:lastYearDate,
         title:'信息填写', // 标题
-        plateNo:'', // 车牌号码
+//        plateNo:'', // 车牌号码
         //frameNo:'', //车辆识别号
-        seat:0, //座位数
+        seat:5, //座位数
         engineNo:'', //发动机号
         nextStep: false,
         registerDate: nowDate,
@@ -166,22 +168,6 @@
         this.plateNo ="暂未上牌";
       }else if (getStore('plateNo')) {//获取车牌号码
         this.plateNo = getStore('plateNo');
-        var url = "http://localhost:8006/car/judgeQuotetion";
-        this.$http.get(url,{
-          params: {
-            licenseNo: this.plateNo
-          }
-        }).then(response => {
-          console.log(response);
-          if(response.data.success){
-            var data = JSON.parse(response.data.data);
-            //alert(data.status);
-          }else{
-            //alert(response.data.message);
-          }
-        }, error => {
-          console.log(error);
-        });
       }
     },
 
@@ -192,46 +178,14 @@
 
     computed:{
       ...mapState([
-        'frameNo',
+        'plateNo','frameNo','modelName'
       ]),
     },
 
     methods:{
-      //发送搜索信息inputVaule
-      postpois(){
-        //输入值不为空时才发送信息
-        if (this.inputVaule) {
-          searchplace(this.cityid, this.inputVaule).then(res => {
-            this.historytitle = false;
-            this.placelist = res;
-            this.placeNone = res.length? false : true;
-          })
-        }
-      },
-      /**
-       * 点击搜索结果进入下一页面时进行判断是否已经有一样的历史记录
-       * 如果没有则新增，如果有则不做重复储存，判断完成后进入下一页
-       */
-      nextpage(index, geohash){
-        let history = getStore('placeHistory');
-        let choosePlace = this.placelist[index];
-        if (history) {
-          let checkrepeat = false;
-          this.placeHistory = JSON.parse(history);
-          this.placeHistory.forEach(item => {
-            if (item.geohash == geohash) {
-              checkrepeat = true;
-            }
-          })
-          if (!checkrepeat) {
-            this.placeHistory.push(choosePlace)
-          }
-        }else {
-          this.placeHistory.push(choosePlace)
-        }
-        setStore('placeHistory',this.placeHistory)
-        this.$router.push({path:'/msite', query:{geohash}})
-      },
+      ...mapMutations([
+        'SAVE_MODEL_NAME'
+      ]),
       clickHander() {
         let validate = this.YDUIFormValidate(this.$refs);
         if(!validate)return;
