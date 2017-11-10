@@ -4,7 +4,7 @@ import {
   INIT_HAS_PLATE_NUMBER,
   INIT_PLATE_NUMBER,
   SAVE_FRAME_NUMBER,
-  SAVE_MODEL_NAME,
+  SAVE_MODEL,
   SAVE_ORDER_NUMBER,
   SAVE_IDENTIFY_NUMBER,
 } from './mutation-types.js'
@@ -44,8 +44,8 @@ export default {
       state.frameNo = frameNo;
   },
   //保存车型名称
-  [SAVE_MODEL_NAME](state, modelName){
-      state.modelName = modelName;
+  [SAVE_MODEL](state, model){
+      state.model = model;
   },
   //保存订单编号
   [SAVE_ORDER_NUMBER](state, orderNo){

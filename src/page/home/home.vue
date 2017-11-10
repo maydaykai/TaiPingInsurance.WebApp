@@ -89,7 +89,6 @@
           });
           return;
         }
-        this.$dialog.loading.open('很快加载好了');
         let plateNo = this.platePre + this.plateNo;
         this.SAVE_HAS_PLATE_NUMBER(hasPlateNo);
         this.SAVE_PLATE_NUMBER(plateNo);
@@ -100,15 +99,17 @@
           }
         }).then(response => {
           console.log(response);
-          if(response.data.success){
+          if(response.data.success ==="true"){
             var data = JSON.parse(response.data.data);
-            this.SAVE_MODEL_NAME(data.brandName);
-            this.$router.push({path:'/car-owner'});
+            if(data.status){
+              this.SAVE_MODEL_NAME(data.brandName);
+              this.$router.push({path:'/car-owner'});              
+            }else{
+              this.$router.push({path:'/car-info'});
+            }
           }else{
-            this.$router.push({path:'/car-info'});
           }
         });
-        this.$dialog.loading.close();
       },
     }
   }

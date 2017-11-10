@@ -1,10 +1,10 @@
 <template>
   <yd-layout>
     <head-top :head-title="title"></head-top>
-    <yd-cell-group :style="{ margin: '1rem 0 .25rem' }">
+    <yd-cell-group :style="{ margin: '.5rem 0 .25rem' }">
       <yd-cell-item>
         <span slot="right"></span>
-        <span slot="left" v-model="plateNo">{{ plateNo }}</span>
+        <span slot="left">{{ plateNo }}</span>
       </yd-cell-item>
     </yd-cell-group>
     <yd-cell-group title="车主信息">
@@ -16,19 +16,15 @@
         <span slot="left">身份证号：</span>
         <yd-input slot="right" required v-model="ownerIdentity" ref="ownerIdentity" min="15" max="18" regex="(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)" placeholder="请输入身份证号"></yd-input>
       </yd-cell-item>
-      <yd-cell-item>
-        <span slot="left">手机号码：</span>
-        <yd-input slot="right" required v-model="ownerMobile" ref="ownerMobile" regex="mobile" placeholder="请输入手机号码"></yd-input>
-      </yd-cell-item>
     </yd-cell-group>
     <yd-cell-group title="车辆信息">
       <yd-cell-item arrow type="link" href="car-identification-number">
         <span slot="left">车辆识别代号：</span>
-        <span slot="right" v-model="frameNo">{{frameNo}}</span>
+        <span slot="right">{{frameNo}}</span>
       </yd-cell-item>
       <yd-cell-item arrow type="link" href="car-model">
         <span slot="left">车型/价格：</span>
-        <span slot="right" v-model="modelName">{{modelName}}</span>
+        <span slot="right">{{model.configModel}}</span>
         <!--<br /><span slot="right" v-model="modelName"></span>-->
       </yd-cell-item>
       <yd-cell-item>
@@ -55,45 +51,6 @@
         </yd-cell-item>
       </div>
     </yd-cell-group>
-    <yd-cell-group title="投保人与被保险人">
-      <yd-cell-item>
-        <div slot="left">投保人同车主</div>
-        <yd-switch slot="right" v-model="insureSwitch"></yd-switch>
-      </yd-cell-item>
-      <div v-show="!insureSwitch">
-        <yd-cell-item>
-          <span slot="left">投保人：</span>
-          <yd-input slot="right" v-model="insureName" min="2" max="6" placeholder="请输入投保人姓名"></yd-input>
-        </yd-cell-item>
-        <yd-cell-item>
-          <span slot="left">身份证号：</span>
-          <yd-input slot="right" v-model="insureIdentity" regex="^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$" placeholder="请输入身份证号"></yd-input>
-        </yd-cell-item>
-        <yd-cell-item>
-          <span slot="left">手机号码：</span>
-          <yd-input slot="right" v-model="insureMobile" regex="mobile" placeholder="请输入手机号码"></yd-input>
-        </yd-cell-item>
-      </div>
-        <yd-cell-item>
-          <div slot="left">被保险人同车主</div>
-          <yd-switch slot="right" v-model="insuredSwitch"></yd-switch>
-        </yd-cell-item>
-        <div v-show="!insuredSwitch">
-          <yd-cell-item >
-            <span slot="left">被保险人：</span>
-            <yd-input slot="right" :required="!insuredSwitch" v-model="insuredName" max="6" placeholder="请输入被保险人姓名"></yd-input>
-          </yd-cell-item>
-          <yd-cell-item>
-            <span slot="left">身份证号：</span>
-            <yd-input slot="right" :required="!insuredSwitch" v-model="insuredIdentity" regex="^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$" placeholder="请输入身份证号"></yd-input>
-          </yd-cell-item>
-          <yd-cell-item>
-            <span slot="left">手机号码：</span>
-            <yd-input slot="right" :required="!insuredSwitch" v-model="insuredMobile" regex="mobile" placeholder="请输入手机号码"></yd-input>
-          </yd-cell-item>
-      </div>
-    </yd-cell-group>
-
     <yd-cell-group title="是否为按揭车">
       <yd-cell-item>
         <div slot="left">是否为按揭车</div>
@@ -116,7 +73,7 @@
   import headTop from "@/components/header/backHead"
   import footGuide from "@/components/footer/footGuide"
   import {currentcity, searchplace, groupcity} from '@/service/getData'
-  import {getStore, setStore} from '@/config/mUtils'
+  import {getStore, setStore, YDUIFormValidate} from '@/config/mUtils'
   import getcity from '@/service/tempdata/home'
   import {mapState, mapMutations} from 'vuex'
   import {judgeQuotetion} from '@/service/getApiData'
@@ -140,17 +97,8 @@
         transferDate: nowDate,//过户日期
         ownerName:'',//车主姓名
         ownerIdentity:'',//车主身份证号
-        ownerMobile:'',//车主手机号码
-        insureSwitch: true,//投保人同车主
-        insureName:'',//投保人姓名
-        insureIdentity:'',//投保人身份证号
-        insureMobile:'',//投保人手机号码
-        insuredSwitch: true,//投保人同车主
-        insuredName:'',//被保人姓名
-        insuredIdentity:'',//被保人身份证号
-        insuredMobile:'',//被保人手机号码
-        loanSwitch: false,//投保人同车主
-        beneficiaries:'',//被保人手机号码
+        loanSwitch:false,//是否是按揭车
+        beneficiaries:'',//受益人
       }
     },
     //通过路由的before钩子解除router-view缓存限制
@@ -161,52 +109,67 @@
       }
       next()
     },
-    mounted(){
-      let hasPlateNo = getStore('hasPlateNo');
-      console.log(hasPlateNo);
-      if(hasPlateNo === "false"){
-        this.plateNo ="暂未上牌";
-      }else if (getStore('plateNo')) {//获取车牌号码
-        this.plateNo = getStore('plateNo');
-      }
-    },
-
     components:{
       headTop,
       footGuide
     },
-
+    mounted(){
+      if(this.model){
+        this.seat = this.model.seat;
+      }
+    },
     computed:{
-      ...mapState([
-        'plateNo','frameNo','modelName'
-      ]),
+      ...mapState({
+        plateNo(state){
+          if(!state.plateNo){
+            this.INIT_PLATE_NUMBER();
+          }
+          return state.plateNo;
+        }
+      ,frameNo:"frameNo",model:"model"
+      }),
     },
 
     methods:{
       ...mapMutations([
-        'SAVE_MODEL_NAME'
+        'INIT_PLATE_NUMBER','SAVE_ORDER_NUMBER'
       ]),
       clickHander() {
-        let validate = this.YDUIFormValidate(this.$refs);
+        let validate = YDUIFormValidate(this.$refs);
         if(!validate)return;
-        this.$dialog.loading.open('很快加载好了');
 
-        this.$router.push({path:'/risk-info'});
-        this.$dialog.loading.close();
-
-      },
-      YDUIFormValidate(refObj) {
-        for(var item in refObj){
-          let obj = refObj[item];
-          if(!obj.valid){
+        var url = "saveOrderVehicle";
+        var vehicleInfo = {
+          licenseNo: this.plateNo,
+          frameNo: this.frameNo,
+          engineNo: this.engineNo,
+          modelCode: this.model.modelCode,
+          chgOwnerFlag: this.transferSwitch ? "01" : "00",
+          transferDate: this.transferSwitch ? this.transferDate : "",
+          singeinDate: this.registerDate,
+          seat: this.seat
+        };
+        var carOwnerInfo = {
+          name: this.ownerName,
+          identifyNumber: this.ownerIdentity
+        };
+        var saveOrderVehicleInfo = {
+          carOwnerInfo:carOwnerInfo,
+          vehicleInfo:vehicleInfo
+        };
+        this.$http.post(url,saveOrderVehicleInfo).then(response => {
+          console.log(response);
+          if(response.data.success ==="true"){
+            var data = JSON.parse(response.data.data);
+            this.SAVE_ORDER_NUMBER(data.orderNo);
+            this.$router.push({path:'/risk-info'});
+          }else{
             this.$dialog.toast({
-              mes: (obj.placeholder ? obj.placeholder.replace('请输入','').replace('请选择','') : '')+obj.errorMsg,
+              mes: response.data.message,
               timeout: 1500
             });
-            return false;
           }
-        }
-        return true;
+        });
       }
     }
   }

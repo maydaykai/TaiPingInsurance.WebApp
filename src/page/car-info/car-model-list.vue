@@ -1,17 +1,19 @@
 <template>
   <yd-layout>
     <head-top :head-title="title"></head-top>
-      <yd-list theme="4" :style="{ margin: '1rem 0 .25rem' }">
-        <yd-list-item v-for="item in imgList" key="title" type="a" href="javascript:;" @click.native="clickHander(item.title)">
-          <img slot="img" :src="item.img" style="height:20px;">
-          <span slot="title">{{item.title}}</span>
-          <yd-list-other slot="other">
-            <div>
-              <span class="list-price"><em>参考价：</em>{{item.price}}</span>
-            </div>
-          </yd-list-other>
-        </yd-list-item>
-      </yd-list>
+    <div :style="{ margin: '.5rem 0 .25rem' }"></div>
+    <yd-search v-model="modelName" :on-submit="submitHandler"></yd-search>
+    <yd-list theme="4">
+      <yd-list-item style="height:1.75rem;" v-for="item in imgList" :key="item.modelCode" type="a" href="javascript:;" @click.native="clickHander(item)">
+        <img slot="img" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510229648526&di=19050158b5c497c51d843d85001fa7d8&imgtype=0&src=http%3A%2F%2Fpic27.nipic.com%2F20130122%2F10558908_131118160000_2.jpg">
+        <span slot="title">{{item.configModel}}</span>
+        <yd-list-other slot="other">
+          <div>
+            <span class="list-price"><em>购买价格：</em>{{item.purchasePrice}}</span>
+          </div>
+        </yd-list-other>
+      </yd-list-item>
+    </yd-list>
   </yd-layout>
 </template>
 
@@ -23,18 +25,13 @@
     data(){
       return{
         title:'品牌型号', // 标题
-        imgList: [
-          {img: "//img1.shikee.com/try/2016/06/23/14381920926024616259.jpg", title: "东风日产EQ7204AC 2.0L 天籁 CVT 2011款 XL 5座 ", price: 156.23, w_price: 89.36},
-          {img: "//img1.shikee.com/try/2016/06/21/10172020923917672923.jpg", title: "东风日产EQ7204AC 2.0L 天籁 CVT 2011款 XL 5座 ", price: 256.23, w_price: 89.36},
-          {img: "//img1.shikee.com/try/2016/06/23/15395220917905380014.jpg", title: "东风日产EQ7204AC 2.0L 天籁 CVT 2011款 XL 5座 ", price: 356.23, w_price: 89.36},
-          {img: "//img1.shikee.com/try/2016/06/25/14244120933639105658.jpg", title: "东风日产EQ7204AC 2.0L 天籁 CVT 2011款 XL 5座 ", price: 456.23, w_price: 89.36},
-          {img: "//img1.shikee.com/try/2016/06/26/12365720933909085511.jpg", title: "东风日产EQ7204AC 2.0L 天籁 CVT 2011款 XL 5座 ", price: 556.23, w_price: 89.36},
-          {img: "//img1.shikee.com/try/2016/06/19/09430120929215230041.jpg", title: "东风日产EQ7204AC 2.0L 天籁 CVT 2011款 XL 5座 ", price: 656.23, w_price: 89.36}
-        ]
+        modelName:'',
+        imgList: []
       }
     },
     mounted(){
-
+      this.modelName = this.$route.query.modelName;
+      this.submitHandler();
     },
 
     components:{
@@ -47,11 +44,37 @@
 
     methods:{
       ...mapMutations([
-        'SAVE_FRAME_NUMBER'
+        'SAVE_MODEL'
       ]),
-      clickHander(title) {
-        console.log(title);
-        this.$router.replace({path:'/car-info'})
+      submitHandler(){
+        let url = "platformModels";
+        this.$http.get(url,{
+          params: {
+            brandName: this.modelName
+          }
+        }).then(response => {
+          console.log(response);
+          if(response.data.success ==="true"){
+            if(Number(response.data.total) > 0){
+              let data = JSON.parse(response.data.data);
+              this.imgList = data;
+            }else{
+              this.$dialog.toast({
+                mes: '通过搜索条件未查找到数据',
+                timeout: 1500
+              });
+            }
+          }else{
+            this.$dialog.toast({
+              mes: response.data.message,
+              timeout: 1500
+            });
+          }
+        });
+      },
+      clickHander(item) {
+        this.SAVE_MODEL(item);
+        this.$router.replace({path:'/car-info'});
       }
     }
   }

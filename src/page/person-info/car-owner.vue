@@ -4,7 +4,7 @@
     <yd-cell-group :style="{ margin: '1rem 0 .25rem' }">
       <yd-cell-item>
         <span slot="right"></span>
-        <span slot="left" v-model="plateNo">{{ plateNo }}</span>
+        <span slot="left">{{ plateNo }}</span>
       </yd-cell-item>
     </yd-cell-group>
     <yd-cell-group title="车主信息">

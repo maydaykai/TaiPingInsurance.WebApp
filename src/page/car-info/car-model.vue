@@ -17,7 +17,7 @@
     </yd-flexbox>
     <yd-cell-group>
       <yd-cell-item>
-        <yd-input slot="right" required v-model="modelNo" ref="modelNo" placeholder="请输入车辆品牌型号"></yd-input>
+        <yd-input slot="right" required v-model="modelNo" ref="modelNo" min="2" placeholder="请输入车辆品牌型号"></yd-input>
       </yd-cell-item>
     </yd-cell-group>
     <yd-button-group>
@@ -29,6 +29,7 @@
 <script>
   import headTop from "@/components/header/backHead"
   import footGuide from "@/components/footer/footGuide"
+  import {YDUIFormValidate} from '@/config/mUtils'
   import {mapState, mapMutations} from 'vuex'
   export default {
     data(){
@@ -39,7 +40,9 @@
       }
     },
     mounted(){
-      this.modelNo = this.modelName;
+      if(this.model){
+        this.modelNo = this.model.configModel;
+      }
     },
 
     components:{
@@ -49,11 +52,16 @@
 
     computed:{
       ...mapState([
-        'modelName'
+        'model'
       ]),
     },
 
     methods:{
+      clickHander() {
+        let validate = YDUIFormValidate(this.$refs);
+        if(!validate)return;
+        this.$router.replace({path:'/car-model-list', query: { modelName: this.modelNo}})
+      }
     }
   }
 
