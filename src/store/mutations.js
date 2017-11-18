@@ -6,7 +6,9 @@ import {
   SAVE_FRAME_NUMBER,
   SAVE_MODEL,
   SAVE_ORDER_NUMBER,
+  INIT_ORDER_NUMBER,
   SAVE_IDENTIFY_NUMBER,
+  SAVE_QUOTED_PRICE
 } from './mutation-types.js'
 
 import {
@@ -50,9 +52,21 @@ export default {
   //保存订单编号
   [SAVE_ORDER_NUMBER](state, orderNo){
     state.orderNo = orderNo;
+    setStore("orderNo",orderNo);
+  },
+  //初始化订单编号
+  [INIT_ORDER_NUMBER](state, orderNo){
+    let initOrderNo = getStore('orderNo');
+    if (initOrderNo) {
+      state.orderNo = initOrderNo;
+    }
   },
   //保存身份证号码
   [SAVE_IDENTIFY_NUMBER](state, identifyNumber){
     state.identifyNumber = identifyNumber;
+  },
+  //保存报价
+  [SAVE_QUOTED_PRICE](state, quotedPrice){
+    state.quotedPrice = quotedPrice;
   },
 }

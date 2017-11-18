@@ -22,11 +22,11 @@
   <!--<slot name="changeLogin"></slot>-->
   <!--</header>-->
   <yd-layout>
-  <yd-navbar slot="navbar" :title="headTitle" fixed>
+  <yd-navbar slot="navbar" :title="headTitle" bgcolor="#3190e8" color="#fff" fixed>
     <section @click="$router.go(-1)" slot="left" v-if="goBack">
-      <yd-navbar-back-icon @click="$router.go(-1)" slot="left"></yd-navbar-back-icon>
+      <yd-navbar-back-icon @click="$router.go(-1)" slot="left" color="#fff"></yd-navbar-back-icon>
     </section>
-    <yd-icon name="type" @click.native="showMenu = true" size="25px" color="#777" slot="right"></yd-icon>
+    <yd-icon name="type" @click.native="showMenu = true" size="25px" color="#fff" slot="right"></yd-icon>
   </yd-navbar>
     <div>
       <yd-popup v-model="showMenu" position="right">

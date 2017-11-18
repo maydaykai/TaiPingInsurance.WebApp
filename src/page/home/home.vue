@@ -30,7 +30,7 @@
       return{
         cityid:'', // 当前城市id
         cityname:'', // 当前城市名字
-        plateNo:'',
+        plateNo:'8903V',
         plateSwitch: false,
         platePre: "粤B",
       }

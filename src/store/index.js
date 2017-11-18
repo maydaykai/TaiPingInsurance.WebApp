@@ -13,6 +13,7 @@ const state = {
   model:'',//车型对象
   orderNo:'',//订单编号
   identifyNumber:'',//车主身份证号
+  quotedPrice:'',//报价对象
 }
 
 export default new Vuex.Store({

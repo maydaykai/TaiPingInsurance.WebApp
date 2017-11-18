@@ -108,7 +108,7 @@ Axios.interceptors.response.use(
       }
     }
     // 返回 response 里的错误信息
-    let errorInfo =  error.response.data ? error.response.data.message : error.response;
+    let errorInfo =  error.response.data ? error.response.data.Message : error.response;
     return Promise.reject(errorInfo);
   }
 );

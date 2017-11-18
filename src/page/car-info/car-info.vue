@@ -90,13 +90,13 @@
 //        plateNo:'', // 车牌号码
         //frameNo:'', //车辆识别号
         seat:5, //座位数
-        engineNo:'', //发动机号
+        engineNo:'2TR1638072', //发动机号
         nextStep: false,
-        registerDate: nowDate,
+        registerDate: "2016-05-30",
         transferSwitch: false,//是否一年内过户车
         transferDate: nowDate,//过户日期
-        ownerName:'',//车主姓名
-        ownerIdentity:'',//车主身份证号
+        ownerName:'李云飞',//车主姓名
+        ownerIdentity:'440304197009058811',//车主身份证号
         loanSwitch:false,//是否是按揭车
         beneficiaries:'',//受益人
       }
@@ -109,14 +109,18 @@
       }
       next()
     },
+    watch: {
+      model:function(){
+        if(this.model){
+          this.seat = this.model.seat;
+        }
+      }
+    },
     components:{
       headTop,
       footGuide
     },
     mounted(){
-      if(this.model){
-        this.seat = this.model.seat;
-      }
     },
     computed:{
       ...mapState({
