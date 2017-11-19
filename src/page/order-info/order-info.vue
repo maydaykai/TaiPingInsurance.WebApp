@@ -5,72 +5,72 @@
     <yd-accordion-item :title="amountTitle">
       <yd-cell-item>
         <span slot="left">订单金额：</span>
-        <span slot="right" v-model="totalAmount">{{totalAmount}}</span>
+        <span slot="right">{{totalAmount}}</span>
       </yd-cell-item>
 
     </yd-accordion-item>
     <yd-accordion-item title="车主信息">
       <yd-cell-item>
         <span slot="left">车主姓名：</span>
-        <span slot="right" v-model="ownerName">{{ownerName}}</span>
+        <span slot="right">{{ownerName}}</span>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">身份证号：</span>
-        <span slot="right" v-model="ownerIdentity">{{ownerIdentity}}</span>
+        <span slot="right">{{ownerIdentity}}</span>
       </yd-cell-item>
     </yd-accordion-item>
     <yd-accordion-item title="投保人信息">
       <yd-cell-item>
         <span slot="left">投保人：</span>
-        <span slot="right" v-model="insureName">{{insureName}}</span>
+        <span slot="right">{{insureName}}</span>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">身份证号：</span>
-        <span slot="right" v-model="insureIdentity">{{insureIdentity}}</span>
+        <span slot="right">{{insureIdentity}}</span>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">手机号码：</span>
-        <span slot="right" v-model="insureMobile">{{insureMobile}}</span>
+        <span slot="right">{{insureMobile}}</span>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">邮箱：</span>
-        <span slot="right" v-model="insureEmail">{{insureEmail}}</span>
+        <span slot="right">{{insureEmail}}</span>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">地址：</span>
-        <span slot="right" v-model="insureAddress">{{insureAddress}}</span>
+        <span slot="right">{{insureAddress}}</span>
       </yd-cell-item>
     </yd-accordion-item>
     <yd-accordion-item title="被保人信息">
       <yd-cell-item>
         <span slot="left">被保人：</span>
-        <span slot="right" v-model="insuredName">{{insuredName}}</span>
+        <span slot="right">{{insuredName}}</span>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">身份证号：</span>
-        <span slot="right" v-model="insuredIdentity">{{insuredIdentity}}</span>
+        <span slot="right">{{insuredIdentity}}</span>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">手机号码：</span>
-        <span slot="right" v-model="insuredMobile">{{insuredMobile}}</span>
+        <span slot="right">{{insuredMobile}}</span>
       </yd-cell-item>
       <yd-cell-item>
         <span slot="left">地址：</span>
-        <span slot="right" v-model="insuredAddress">{{insuredAddress}}</span>
+        <span slot="right">{{insuredAddress}}</span>
       </yd-cell-item>
     </yd-accordion-item>
       <yd-accordion-item title="配送信息" v-show="dispatchShow">
         <yd-cell-item>
           <span slot="left">收件人：</span>
-          <span slot="right" v-model="dispatchName">{{dispatchName}}</span>
+          <span slot="right">{{dispatchName}}</span>
         </yd-cell-item>
         <yd-cell-item>
           <span slot="left">手机号码：</span>
-          <span slot="right" v-model="dispatchMobile">{{dispatchMobile}}</span>
+          <span slot="right">{{dispatchMobile}}</span>
         </yd-cell-item>
         <yd-cell-item>
           <span slot="left">地址：</span>
-          <span slot="right" v-model="dispatchAddress">{{dispatchAddress}}</span>
+          <span slot="right">{{dispatchAddress}}</span>
         </yd-cell-item>
     </yd-accordion-item>
   </yd-accordion>
