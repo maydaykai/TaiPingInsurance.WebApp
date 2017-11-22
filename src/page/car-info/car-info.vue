@@ -141,7 +141,7 @@
       clickHander() {
         let validate = YDUIFormValidate(this.$refs);
         if(!validate)return;
-
+        
         var url = "saveOrderVehicle";
         var vehicleInfo = {
           licenseNo: this.plateNo,

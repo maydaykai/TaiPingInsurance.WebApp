@@ -1,4 +1,6 @@
 import App from '../App'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
 const home = r => require.ensure([], () => r(require('../page/home/home')), 'home')
 const login = r => require.ensure([], () => r(require('../page/login/login')), 'login')
@@ -16,8 +18,10 @@ const personInfo = r => require.ensure([], () => r(require('../page/person-info/
 const orderInfo = r => require.ensure([], () => r(require('../page/order-info/order-info')), 'order-info')
 const orderList = r => require.ensure([], () => r(require('../page/order-info/order-list')), 'order-list')
 
+Vue.use(VueRouter);
 
-export default [{
+let routerMode = 'hash';
+const routes = [{
   path: '/',
   component: App, //顶层路由，对应index.html
   children: [ //二级路由。对应App.vue
@@ -107,4 +111,34 @@ export default [{
       component: orderList
     },
   ]
-}]
+}];
+
+const router = new VueRouter({
+  routes,
+  mode: routerMode,
+  // scrollBehavior (to, from, savedPosition) {
+  //   if (savedPosition) {
+  //     return savedPosition
+  //   } else {
+  //     return { x: 0, y: 0 }
+  //   }
+  // }
+});
+// router.afterEach((to, from, next) => {
+//   window.scrollTo(0, 0);
+// });
+//  判断是否需要登录权限 以及是否登录
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some(res => res.meta.requireAuth)) {// 判断是否需要登录权限
+//     if (localStorage.getItem('token')) {// 判断是否登录
+//       next()
+//     } else {// 没登录则跳转到登录界面
+//       next({
+//         path: '/login'
+//       })
+//     }
+//   } else {
+//     next()
+//   }
+// });
+export default router;

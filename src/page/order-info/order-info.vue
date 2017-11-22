@@ -82,6 +82,7 @@
 
 <script type="text/babel">
   import headTop from "@/components/header/backHead"
+  import {mapState, mapMutations} from 'vuex'
   export default {
     data(){
       return{
@@ -112,7 +113,7 @@
       var url = "orderList";
       this.$http.get(url, {
         params: {
-          orderNo: "f2c8135d-0281-43b0-a22d-2cb9137862eb"
+          orderNo: this.orderNo
         }
       }).then(response => {
         console.log(response);
@@ -148,11 +149,24 @@
     components:{
       headTop
     },
+    computed:{
+      ...mapState({
+        orderNo(state){
+          if(!state.orderNo){
+            this.INIT_ORDER_NUMBER();
+          }
+          return state.orderNo;
+        }
+      }),
+    },
     methods: {
+      ...mapMutations([
+        'INIT_ORDER_NUMBER'
+      ]),
       clickHander() {
         var url = "paymentRegister";
         var order = {
-          orderNo: "f2c8135d-0281-43b0-a22d-2cb9137862eb"
+          orderNo: this.orderNo
         };
         this.$http.post(url,order).then(response => {
           console.log(response);

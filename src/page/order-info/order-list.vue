@@ -86,9 +86,7 @@
   }
   .car-quote-operate i {
     display: inline-block;
-    *
     display: inline;
-    *
     zoom: 1;
     vertical-align: middle;
     -webkit-transition: all,.25s,linear .25s;

@@ -36,6 +36,7 @@
         <span slot="left">手机号码：</span>
         <yd-input slot="right" :required="!insureSwitch" v-model="insureMobile" ref="insureMobile" min="11" regex="mobile" placeholder="请输入手机号码"></yd-input>
       </yd-cell-item>
+      </div>
       <yd-cell-item>
         <span slot="left">邮箱：</span>
         <yd-input slot="right" required v-model="insureEmail" regex="email" ref="insureEmail" min="7" placeholder="请输入电子邮箱"></yd-input>
@@ -86,7 +87,7 @@
       </div>
     </yd-cell-group>
     <yd-button-group>
-      <yd-button size="large" @click.native="clickHander">下一步</yd-button>
+      <yd-button size="large" @click.native="clickHander">确认投保</yd-button>
     </yd-button-group>
   </yd-layout>
 </template>
@@ -104,18 +105,18 @@
         ownerName:'',//车主姓名
         ownerIdentity:'',//车主身份证号
         ownerMobile:'',//车主手机号码
-        insureSwitch: true,//投保人同车主
+        insureSwitch: false,//投保人同车主
         insureName:'',//投保人姓名
         insureIdentity:'',//投保人身份证号
         insureMobile:'',//投保人手机号码
         insureEmail:'',//投保人邮箱
         insureAddress:'',//投保人地址
-        insuredSwitch: true,//被保人同车主
+        insuredSwitch: false,//被保人同车主
         insuredName:'',//被保人姓名
         insuredIdentity:'',//被保人身份证号
         insuredMobile:'',//被保人手机号码
         insuredAddress:'',//被保人地址
-        dispatchSwitch: true,//收件人同车主
+        dispatchSwitch: false,//收件人同车主
         dispatchName:'',//配送姓名
         dispatchMobile:'',//配送手机号码
         dispatchAddress:'',//配送地址
@@ -129,7 +130,31 @@
       }
       next()
     },
+    watch: {
+      insureSwitch:function(){
+        if(this.insureSwitch){
+          this.insureName = this.ownerName;
+          this.insureIdentity = this.ownerIdentity;
+        }
+      },
+      insuredSwitch:function(){
+        if(this.insureSwitch){
+          this.insuredName = this.insureName;
+          this.insuredIdentity = this.insureIdentity;
+          this.insuredMobile = this.insureMobile;
+          this.insuredAddress = this.insureAddress;
+        }
+      },
+      dispatchSwitch:function(){
+        if(this.dispatchSwitch){
+          this.dispatchName = this.ownerName;
+          this.dispatchMobile = this.ownerMobile;
+          this.dispatchAddress = this.insureAddress;
+        }
+      },
+    },
     mounted(){
+      this.ownerIdentity = this.identifyNumber;
       var url = "insureHistory";
       this.$http.get(url,{
         params: {
@@ -151,7 +176,6 @@
           this.insuredIdentity = data.insured.identifyNumber;//被保人身份证号
           this.insuredMobile = data.insured.insuredMobilePhone;//被保人手机号码
           this.insuredAddress = data.applicant.insuredAddress;//被保人地址
-          this.insuredName = data.insured.insuredName;//被保人姓名
         }else{
           this.$dialog.toast({
             mes: response.data.message,
@@ -166,7 +190,7 @@
     },
     computed:{
       ...mapState([
-        'plateNo','orderNo','identifyNumber'
+        'plateNo','orderNo','identifyNumber',''
       ]),
     },
 
@@ -195,11 +219,17 @@
           insuredMobilePhone: this.insuredMobile,
           insuredAddress: this.insuredAddress
         };
+        var dispatch = {
+          name: this.dispatchName,
+          address: this.dispatchAddress,
+          mobilePhone: this.dispatchMobile
+        };
         var insuredConfirmInfo = {
           carOwner:carOwner,
           order:order,
           applicant:applicant,
-          insured:insured
+          insured:insured,
+          dispatch:dispatch
         };
         this.$http.post(url,insuredConfirmInfo).then(response => {
           console.log(response);

@@ -1,8 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import routes from './router/router'
+import router from './router/router'
 import store from './store/'
 //import './config/rem'
 import FastClick from 'fastclick'
@@ -18,25 +17,6 @@ if ('addEventListener' in document) {
     FastClick.attach(document.body);
   }, false);
 }
-
-let routerMode = 'hash'
-Vue.use(VueRouter)
-
-
-const router = new VueRouter({
-  routes,
-  mode: routerMode,
-  // scrollBehavior (to, from, savedPosition) {
-  //   if (savedPosition) {
-  //     return savedPosition
-  //   } else {
-  //     return { x: 0, y: 0 }
-  //   }
-  // }
-})
-// router.afterEach((to, from, next) => {
-//   window.scrollTo(0, 0);
-// });
 
 /* eslint-disable no-new */
 new Vue({

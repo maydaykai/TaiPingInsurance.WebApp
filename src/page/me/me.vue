@@ -3,10 +3,19 @@
     <head-top :head-title="title" go-back="false"></head-top>
     <yd-grids-group :rows="1" style="height: 100px;margin: .5rem 0 .25rem">
       <yd-grids-item>
+      </yd-grids-item>
+      <yd-grids-item>
         <yd-icon slot="icon" name="ucenter-outline" size="1rem" color="#f44336"></yd-icon>
         <span slot="text">image</span>
-      </yd-grids-item>
+      </yd-grids-item>      
     </yd-grids-group>
+    <div>
+    <yd-flexbox direction="vertical">
+        <yd-flexbox-item>欢迎您：{{isLogin}}</yd-flexbox-item>
+        <yd-flexbox-item>欢迎您：{{isLogin}}</yd-flexbox-item>
+        <yd-flexbox-item>欢迎您：{{isLogin}}</yd-flexbox-item>
+    </yd-flexbox>
+    </div>
     <yd-cell-group>
       <yd-cell-item arrow type="link" href="/order-list">
         <yd-icon slot="icon" name="order" size=".42rem" color="#f44336"></yd-icon>
@@ -39,8 +48,17 @@
       }
     },
 
+    //通过路由的before钩子解除router-view缓存限制
+    beforeRouteLeave(to, from, next){
+      if(to.path.indexOf("login") > -1) {
+        this.$destroy()
+      }
+      next()
+    },
     mounted(){
-
+      if(!window.localStorage.getItem('token')){
+        this.$router.replace({path:'/login'});
+      }
     },
 
     components:{
@@ -59,12 +77,13 @@
           title: '注销登录',
           mes: '您确定要注销当前登录用户吗？',
           opts: () => {
-            logout();
+            this.logout();
           }
         });
       },
       logout() {
-
+        window.localStorage.removeItem('token');
+        this.$router.replace({path:'/login'});
       },
     }
   }

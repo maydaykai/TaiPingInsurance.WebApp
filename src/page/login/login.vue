@@ -26,8 +26,8 @@
     data(){
       return{
         title:'登录', // 标题
-        mobile:'',//手机号码
-        password:'',//密码
+        mobile:'18823770328',//手机号码
+        password:'123456',//密码
       }
     },
     //通过路由的before钩子解除router-view缓存限制
@@ -64,43 +64,21 @@
             icon: 'success',
             timeout: 1500
           });
-
         }, 1000);
       },
       clickHander() {
         let validate = YDUIFormValidate(this.$refs);
         if(!validate)return;
-        var url = "insConfirm";
-        var carOwner = {
-          name: this.ownerName,
-          identifyNumber: this.ownerIdentity
+        var url = "token";
+        var loginInfo = {
+          username: this.mobile,
+          password: this.password,
+          grant_type: 'password'
         };
-        var order = {
-          orderNo: this.orderNo
-        };
-        var applicant = {
-          appliName: this.insureName,
-          identifyNumber: this.insureIdentity,
-          mobilePhone: this.insureMobile,
-          email: this.insureEmail,
-          appliAddress: this.insureAddress
-        };
-        var insured = {
-          insuredName: this.insuredName,
-          identifyNumber: this.insuredIdentity,
-          insuredMobilePhone: this.insuredMobile,
-          insuredAddress: this.insuredAddress
-        };
-        var insuredConfirmInfo = {
-          carOwner:carOwner,
-          order:order,
-          applicant:applicant,
-          insured:insured
-        };
-        this.$http.post(url,insuredConfirmInfo).then(response => {
+        this.$http.post(url,loginInfo).then(response => {
           console.log(response);
-          if(response.data.success ==="true"){
-            //var data = JSON.parse(response.data.data);
+          if(response.data){
+            window.localStorage.setItem('token',response.data.access_token);
             this.$router.push({path:'/order-info'});
           }else{
             this.$dialog.toast({
