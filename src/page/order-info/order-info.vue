@@ -111,9 +111,13 @@
     },
     mounted(){
       var url = "orderList";
+      var orderNo = this.$router.query.orderNo;
+      if(!orderNo){
+        orderNo = this.orderNo;
+      }
       this.$http.get(url, {
         params: {
-          orderNo: this.orderNo
+          orderNo: orderNo
         }
       }).then(response => {
         console.log(response);

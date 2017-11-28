@@ -1,19 +1,21 @@
 <template>
   <yd-layout>
     <head-top :head-title="title"></head-top>
-    <yd-list theme="4"> /* 这里可选1/2/3/4/5五种样式 */
-      <yd-list-item v-for="item, key in list" :key="key">
-        <img slot="img" :src="item.img">
-        <span slot="title">{{item.title}}</span>
-        <yd-list-other slot="other">
-          <div>
-            <span class="demo-list-price"><em>¥</em>{{item.price}}</span>
-            <span class="demo-list-del-price">¥{{item.w_price}}</span>
-          </div>
-          <div>content</div>
-        </yd-list-other>
-      </yd-list-item>
-    </yd-list>
+    <yd-pullrefresh :callback="getOrderList" ref="pullrefresh">
+      <yd-list theme="4"> /* 这里可选1/2/3/4/5五种样式 */
+        <yd-list-item v-for="item in list" :key="item.Id" type="link" :to="{ path: 'order-info', query: { orderNo: item.Id }}" replace>
+          <img slot="img" :src="item.img">
+          <span slot="title">{{item.LicenseNo}}</span>
+          <yd-list-other slot="other">
+            <div>
+              <span class="demo-list-price"><em>¥</em>{{item.TotalAmount}}</span>
+              <span class="demo-list-del-price">¥{{item.TotalAmount}}</span>
+            </div>
+            <div>{{item.StatusName}}</div>
+          </yd-list-other>
+        </yd-list-item>
+      </yd-list>
+    </yd-pullrefresh>
   </yd-layout>
 </template>
 
@@ -34,7 +36,7 @@
     },
 
     mounted(){
-      this.getPrice();
+      this.getOrderList();
     },
 
     components:{
@@ -51,15 +53,15 @@
       clickHander() {
         this.$router.push({path:'/person-info'});
       },
-      getPrice(){
-        var url = "recommended";
-        this.$http.post(url,{
-          orderNo: this.orderNo
+      getOrderList(){
+        var url = "userOrderList";
+        this.$http.post(url,{          
         }).then(response => {
           console.log(response);
           if(response.data.success ==="true"){
             var data = JSON.parse(response.data.data);
-            this.totalAmount = data.totalAmount;
+            this.totalAmount = response.data.total;
+            this.list = data;
             this.$refs.pullrefresh.$emit('ydui.pullrefresh.finishLoad');
           }else{
             this.$dialog.toast({
