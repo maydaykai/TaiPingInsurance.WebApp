@@ -4,7 +4,7 @@ import { Confirm, Alert, Toast, Notify, Loading } from 'vue-ydui/dist/lib.rem/di
 import router from '../router/router';
 
 const Axios = axios.create({
-  baseURL: "http://192.168.1.249:8006/car/", // 因为我本地做了反向代理
+  baseURL: "http://tpapics.anxinbx.com/car/", // 因为我本地做了反向代理http://192.168.1.249:8006/car/
   timeout: 10000,
   responseType: "json",
   withCredentials: false, // 是否允许带cookie这些
@@ -82,12 +82,15 @@ Axios.interceptors.response.use(
       //   });
       // } else {
         // 下面是接口回调的satus ,因为我做了一些错误页面,所以都会指向对应的报错页面
+        if (error.response.status === 401) {
+          router.replace({path:'/login'});
+        }
         if (error.response.status === 403) {
           // router.push({
           //   path: "/error/403"
           // });
           Toast({
-            mes: '服务器有点忙，请稍后再试！',
+            mes: '服务器正忙，请稍后再试！',
             timeout: 1500,
             icon: 'error'
           });
@@ -107,7 +110,7 @@ Axios.interceptors.response.use(
           //   path: "/error/502"
           // });
           Toast({
-            mes: '服务器有点忙，请稍后再试！',
+            mes: '服务器正忙，请稍后再试！',
             timeout: 1500,
             icon: 'error'
           });

@@ -17,6 +17,7 @@ const quotedPrice = r => require.ensure([], () => r(require('../page/quoted-pric
 const personInfo = r => require.ensure([], () => r(require('../page/person-info/person-info')), 'person-info')
 const orderInfo = r => require.ensure([], () => r(require('../page/order-info/order-info')), 'order-info')
 const orderList = r => require.ensure([], () => r(require('../page/order-info/order-list')), 'order-list')
+const paySuccess = r => require.ensure([], () => r(require('../page/pay/pay-success')), 'pay-success')
 
 Vue.use(VueRouter);
 
@@ -109,6 +110,11 @@ const routes = [{
     {
       path: '/order-list',
       component: orderList
+    },
+    //付款成功
+    {
+      path: '/pay-success',
+      component: paySuccess
     },
   ]
 }];

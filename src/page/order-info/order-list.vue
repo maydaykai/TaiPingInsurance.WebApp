@@ -3,8 +3,8 @@
     <head-top :head-title="title"></head-top>
     <yd-pullrefresh :callback="getOrderList" ref="pullrefresh">
       <yd-list theme="4"> /* 这里可选1/2/3/4/5五种样式 */
-        <yd-list-item v-for="item in list" :key="item.Id" type="link" :to="{ path: 'order-info', query: { orderNo: item.Id }}" replace>
-          <img slot="img" :src="item.img">
+        <yd-list-item v-for="item in list" :key="item.Id" type="link" :href="{ path: 'order-info', query: { 'orderNo': item.Id }}" replace>
+          <!-- <img slot="img" :src="item.img"> -->
           <span slot="title">{{item.LicenseNo}}</span>
           <yd-list-other slot="other">
             <div>
@@ -27,14 +27,13 @@
   export default {
     data(){
       return{
-        title:'选择报价', // 标题
+        title:'订单列表', // 标题
         totalAmount:0,
         list: [
 
         ],
       }
     },
-
     mounted(){
       this.getOrderList();
     },
@@ -50,9 +49,6 @@
     },
 
     methods:{
-      clickHander() {
-        this.$router.push({path:'/person-info'});
-      },
       getOrderList(){
         var url = "userOrderList";
         this.$http.post(url,{          

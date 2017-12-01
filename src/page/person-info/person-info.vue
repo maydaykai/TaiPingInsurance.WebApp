@@ -148,7 +148,7 @@
       dispatchSwitch:function(){
         if(this.dispatchSwitch){
           this.dispatchName = this.ownerName;
-          this.dispatchMobile = this.ownerMobile;
+          this.dispatchMobile = this.insureMobile;
           this.dispatchAddress = this.insureAddress;
         }
       },

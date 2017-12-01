@@ -2,14 +2,18 @@
   <yd-layout>
     <head-top :head-title="title"></head-top>
   <yd-accordion :style="{ margin: '.5rem 0 .25rem' }">
-    <yd-accordion-item :title="amountTitle">
-      <yd-cell-item>
-        <span slot="left">订单金额：</span>
-        <span slot="right">{{totalAmount}}</span>
+    <yd-accordion-item :title="'订单金额：' + totalAmount">
+      <yd-cell-item v-for="item in itemKindBZ" :key="item.Id">
+        <span slot="left">{{item.kindName}}</span>
+        <span slot="right">{{'￥' + item.priceTaxTotal+'(保'+item.sumInsured+')'}}</span>
+      </yd-cell-item>
+      <yd-cell-item v-for="item in itemKindBS" :key="item.Id">
+        <span slot="left">{{item.kindName}}</span>
+        <span slot="right">{{'￥' + item.priceTaxTotal+(item.sumInsured > 0 ? '(保'+ item.sumInsured +')' : '')}}</span>
       </yd-cell-item>
 
     </yd-accordion-item>
-    <yd-accordion-item title="车主信息">
+    <yd-accordion-item :title="'车主信息：' + ownerName">
       <yd-cell-item>
         <span slot="left">车主姓名：</span>
         <span slot="right">{{ownerName}}</span>
@@ -19,7 +23,7 @@
         <span slot="right">{{ownerIdentity}}</span>
       </yd-cell-item>
     </yd-accordion-item>
-    <yd-accordion-item title="投保人信息">
+    <yd-accordion-item :title="'投保人信息：' + insureName">
       <yd-cell-item>
         <span slot="left">投保人：</span>
         <span slot="right">{{insureName}}</span>
@@ -41,7 +45,7 @@
         <span slot="right">{{insureAddress}}</span>
       </yd-cell-item>
     </yd-accordion-item>
-    <yd-accordion-item title="被保人信息">
+    <yd-accordion-item :title="'被保人信息：' + insuredName">
       <yd-cell-item>
         <span slot="left">被保人：</span>
         <span slot="right">{{insuredName}}</span>
@@ -59,7 +63,7 @@
         <span slot="right">{{insuredAddress}}</span>
       </yd-cell-item>
     </yd-accordion-item>
-      <yd-accordion-item title="配送信息" v-show="dispatchShow">
+      <yd-accordion-item :title="'配送信息：' + dispatchName" v-show="dispatchShow">
         <yd-cell-item>
           <span slot="left">收件人：</span>
           <span slot="right">{{dispatchName}}</span>
@@ -87,8 +91,8 @@
     data(){
       return{
         title:'订单详情', // 标题
-        ownerName:'陈奕迅',//车主姓名
-        ownerIdentity:'4816165161615616',//车主身份证号
+        ownerName:'',//车主姓名
+        ownerIdentity:'',//车主身份证号
         ownerMobile:'',//车主手机号码
         insureSwitch: true,//投保人同车主
         insureName:'',//投保人姓名
@@ -106,18 +110,25 @@
         dispatchMobile:'',//配送手机号码
         dispatchAddress:'',//配送地址
         totalAmount:0,
-        amountTitle:"订单金额：",
+        itemKindBS:{},
+        itemKindBZ:{}
       }
+    },
+    //通过路由的before钩子解除router-view缓存限制
+    beforeRouteLeave(to, from, next){
+      this.$destroy();
+      next();
     },
     mounted(){
       var url = "orderList";
-      var orderNo = this.$router.query.orderNo;
-      if(!orderNo){
-        orderNo = this.orderNo;
+      var orderNumber = this.$route.query.orderNo;
+      console.log(orderNumber);
+      if(orderNumber == undefined){
+        orderNumber = this.orderNo;
       }
       this.$http.get(url, {
         params: {
-          orderNo: orderNo
+          orderNo: orderNumber
         }
       }).then(response => {
         console.log(response);
@@ -141,7 +152,9 @@
           }else{
             this.dispatchShow = false;
           }
-          this.amountTitle = "订单金额："+data.common.sumInsured;
+          this.totalAmount = data.common.sumInsured;
+          this.itemKindBS = data.itemKindBS;
+          this.itemKindBZ = data.itemKindBZ;
         } else {
           this.$dialog.toast({
             mes: response.data.message,
