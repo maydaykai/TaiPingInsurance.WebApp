@@ -27,19 +27,17 @@
       return{
         title:'登录', // 标题
         mobile:'18823770328',//手机号码
-        password:'123456',//密码
+        password:'770328',//密码
+        returnUrl:'',
       }
     },
     //通过路由的before钩子解除router-view缓存限制
     beforeRouteLeave(to, from, next){
-      console.log(to.path.indexOf("home"));
-      if(to.path.indexOf("home") > -1) {
-        this.$destroy()
-      }
+      this.$destroy();
       next()
     },
     mounted(){
-
+      this.returnUrl = this.$route.query.returnUrl;
     },
     components:{
       headTop,
@@ -79,7 +77,24 @@
           console.log(response);
           if(response.data){
             window.localStorage.setItem('token',response.data.access_token);
-            this.$router.push({path:'/order-info'});
+            this.$dialog.loading.close();
+            this.$dialog.toast({
+              mes: '登录成功',
+              icon: 'success',
+              timeout: 1500,
+              callback: function(){
+                if(this.returnUrl){
+                  this.$router.push({path:this.returnUrl});
+                }else{
+                  this.$router.push({path:'/order-list'});
+                }
+              }
+            });
+            if(this.returnUrl){
+              this.$router.push({path:this.returnUrl});
+            }else{
+              this.$router.push({path:'/order-info'});
+            }
           }else{
             this.$dialog.toast({
               mes: response.data.message,

@@ -2,7 +2,7 @@
   <yd-layout>
     <head-top :head-title="title"></head-top>
     <yd-pullrefresh :callback="getOrderList" ref="pullrefresh">
-      <yd-list theme="4"> /* 这里可选1/2/3/4/5五种样式 */
+      <yd-list theme="4" :style="{ margin: '.5rem 0 .25rem' }"> /* 这里可选1/2/3/4/5五种样式 */
         <yd-list-item v-for="item in list" :key="item.Id" type="link" :href="{ path: 'order-info', query: { 'orderNo': item.Id }}" replace>
           <!-- <img slot="img" :src="item.img"> -->
           <span slot="title">{{item.LicenseNo}}</span>

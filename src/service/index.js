@@ -4,7 +4,7 @@ import { Confirm, Alert, Toast, Notify, Loading } from 'vue-ydui/dist/lib.rem/di
 import router from '../router/router';
 
 const Axios = axios.create({
-  baseURL: "http://tpapics.anxinbx.com/car/", // 因为我本地做了反向代理http://192.168.1.249:8006/car/
+  baseURL: "http://tpapics.anxinbx.com/car/", // 因为我本地做了反向代理http://tpapics.anxinbx.com/car/http://192.168.1.249:8006/car/
   timeout: 10000,
   responseType: "json",
   withCredentials: false, // 是否允许带cookie这些
@@ -83,7 +83,8 @@ Axios.interceptors.response.use(
       // } else {
         // 下面是接口回调的satus ,因为我做了一些错误页面,所以都会指向对应的报错页面
         if (error.response.status === 401) {
-          router.replace({path:'/login'});
+          let path = router.match(location).path;
+          router.replace({path:'/login',query:{ returnUrl: path }});
         }
         if (error.response.status === 403) {
           // router.push({
@@ -135,9 +136,9 @@ Axios.interceptors.response.use(
             icon: 'error'
           });
         }
-        if (error.response.status === 400) {
-          router.replace({path:'/login'});
-        }
+        // if (error.response.status === 400) {
+        //   router.replace({path:'/login'});
+        // }
       // }
     // }
     // 返回 response 里的错误信息
